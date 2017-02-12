@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.util.Log;
+import android.widget.ListView;
 
 import com.jmllerena.donotforget.dao.Note;
 
@@ -23,6 +24,8 @@ public class ListNotesActivity extends AppCompatActivity {
      */
     private static final String TAG = "ListNotesActivity";
 
+    ListView lvNotes;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "onCreate begin function");
@@ -32,39 +35,16 @@ public class ListNotesActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Initialize ListView
+        lvNotes = (ListView) findViewById(R.id.lvNotes);
+
         // Create floating button and add an action
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Snackbar.make(view, "Que guapo eres cojones", Snackbar.LENGTH_LONG)
-                //        .setAction("Action", null).show();
-
-                // Creamos un dialogo para preguntar el tipo de Nota que desea crear
-                AlertDialog.Builder builder = new AlertDialog.Builder(ListNotesActivity.this);
-                builder.setTitle("New Note")
-                       .setItems(R.array.notes_types, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Note note;
-                        switch (which) {
-                            case 0:
-                                note = new Note("No description", new Date(), Note.TypeNote.BLOC);
-                                note.save();
-                                break;
-                            case 1:
-                                note = new Note("No description", new Date(), Note.TypeNote.LIST);
-                                note.save();
-                                break;
-                        }
-                    }
-                });
-
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            }
-        });
+        fab.setOnClickListener(newNoteButton);
         Log.i(TAG, "onCreate end function");
+
+        // Load notes in ListView
+        loadNotes();
     }
 
     @Override
@@ -87,5 +67,46 @@ public class ListNotesActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Variable to control new note button action
+     */
+    private FloatingActionButton.OnClickListener newNoteButton = new FloatingActionButton.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            //Snackbar.make(view, "Que guapo eres cojones", Snackbar.LENGTH_LONG)
+            //        .setAction("Action", null).show();
+
+            // Creamos un dialogo para preguntar el tipo de Nota que desea crear
+            AlertDialog.Builder builder = new AlertDialog.Builder(ListNotesActivity.this);
+            builder.setTitle("New Note")
+                    .setItems(R.array.notes_types, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Note note;
+                            switch (which) {
+                                case 0:
+                                    note = new Note("No description", new Date(), Note.TypeNote.BLOC);
+                                    note.save();
+                                    break;
+                                case 1:
+                                    note = new Note("No description", new Date(), Note.TypeNote.LIST);
+                                    note.save();
+                                    break;
+                            }
+                        }
+                    });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+    };
+
+    /**
+     * Load Notes in the list view
+     */
+    private void loadNotes() {
+
     }
 }
