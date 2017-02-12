@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Do Not Forget</string>
+    <string name="action_settings">Settings</string>
+
+    <string-array name="notes_types">
+        <item>Text bloc</item>
+        <item>Check List</item>
+    </string-array>
+</resources>
