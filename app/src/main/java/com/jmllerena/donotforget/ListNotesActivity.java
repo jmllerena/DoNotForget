@@ -11,11 +11,13 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.jmllerena.donotforget.dao.Note;
 
 import java.util.Date;
+import java.util.List;
 
 public class ListNotesActivity extends AppCompatActivity {
 
@@ -84,7 +86,7 @@ public class ListNotesActivity extends AppCompatActivity {
                     .setItems(R.array.notes_types, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Note note;
+                            Note note = null;
                             switch (which) {
                                 case 0:
                                     note = new Note("No description", new Date(), Note.TypeNote.BLOC);
@@ -95,6 +97,11 @@ public class ListNotesActivity extends AppCompatActivity {
                                     note.save();
                                     break;
                             }
+                            // Load the listview with the new note
+                            if (note != null)
+                                loadNotes();
+
+                            // TODO: open the BLOC/LIST editor after create
                         }
                     });
 
@@ -107,6 +114,14 @@ public class ListNotesActivity extends AppCompatActivity {
      * Load Notes in the list view
      */
     private void loadNotes() {
+        // Instance the ListView object
+        ListView lvNotes;
+        lvNotes = (ListView) findViewById(R.id.lvNotes);
 
+        // Query for Notes
+        List<Note> notes = Note.listAll(Note.class);
+
+        // Load listview with query using adapter
+        lvNotes.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, notes));
     }
 }

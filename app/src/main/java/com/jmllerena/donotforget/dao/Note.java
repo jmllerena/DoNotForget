@@ -7,20 +7,19 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by José Manuel on 11/02/2017.
+ * This Note class represent a Note inserted in the application. Notes can be BLOCs or LIST of items.
  */
-
 public class Note extends SugarRecord {
 
     public enum TypeNote {
         BLOC, LIST
     }
 
-    String description;
-    Date date_pub;
-    TypeNote type;
-    String text;
-    Date date_concluded;
+    private String description;
+    private Date date_pub;
+    private TypeNote type;
+    private String text;
+    private Date date_concluded;
 
     public Note() {
     }
@@ -96,5 +95,15 @@ public class Note extends SugarRecord {
 
     public void setDate_concluded(Date date_concluded) {
         this.date_concluded = date_concluded;
+    }
+
+    @Override
+    public String toString() {
+        if (type == TypeNote.BLOC) {
+            return "BLOC: " + description;
+        }
+        else {
+            return "LIST: " + description;
+        }
     }
 }
